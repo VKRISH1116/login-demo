@@ -1,0 +1,24 @@
+# ── Backend (Maven / Java) ──────────────────────────────
+target/
+!.mvn/wrapper/maven-wrapper.jar
+*.class
+# build output was relocated OUT of OneDrive on this machine:
+# C:/Users/yathi/login-demo-build/  (not inside the repo, ignored for safety)
+
+# ── Frontend (Node / Vite) ──────────────────────────────
+node_modules/
+dist/
+dist-ssr/
+*.local
+.vite/
+
+# ── Editors / OS ────────────────────────────────────────
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# ── Logs ────────────────────────────────────────────────
+*.log
+npm-debug.log*

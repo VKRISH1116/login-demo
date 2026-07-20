@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Demo — Complete Guide &amp; Presentation Script</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --panel:#ffffff; --ink:#1b1f24; --muted:#5b6472;
+    --line:#e3e7ec; --accent:#2f6feb; --accent-soft:#e8f0fe;
+    --good:#1a7f52; --good-soft:#e4f5ec; --warn:#b4690e; --warn-soft:#fbefdd;
+    --bad:#c0392b; --bad-soft:#fbe9e7; --code-bg:#0f1729; --code-ink:#dbe4f0;
+    --code-dim:#7d8ba6; --code-key:#7cc5ff; --code-str:#9be29b; --code-com:#6d7a92;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0e1116; --panel:#161b22; --ink:#e6edf3; --muted:#9aa6b4;
+      --line:#262d38; --accent:#589bff; --accent-soft:#12233f;
+      --good:#4ac585; --good-soft:#12271c; --warn:#e0a23a; --warn-soft:#2a2110;
+      --bad:#f0796a; --bad-soft:#2a1512;
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  .wrap{display:grid; grid-template-columns:260px 1fr; max-width:1280px; margin:0 auto;}
+  /* Sidebar nav */
+  nav{
+    position:sticky; top:0; align-self:start; height:100vh; overflow-y:auto;
+    padding:24px 16px; border-right:1px solid var(--line); background:var(--panel);
+  }
+  nav h2{font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin:18px 0 8px;}
+  nav a{display:block; color:var(--muted); text-decoration:none; padding:4px 8px; border-radius:6px; font-size:14px;}
+  nav a:hover{background:var(--accent-soft); color:var(--accent);}
+  nav .top{font-weight:700; color:var(--ink); font-size:16px; margin-bottom:4px;}
+  main{padding:40px 48px; min-width:0;}
+  h1{font-size:32px; line-height:1.2; margin:.2em 0;}
+  h2{font-size:25px; margin-top:2em; padding-bottom:.25em; border-bottom:2px solid var(--line);}
+  h3{font-size:19px; margin-top:1.8em;}
+  h4{font-size:16px; margin:1.4em 0 .4em; color:var(--accent);}
+  p,li{color:var(--ink);}
+  code{font-family:"SF Mono",Consolas,"Roboto Mono",monospace; font-size:.88em; background:var(--accent-soft); color:var(--accent); padding:1px 6px; border-radius:5px;}
+  pre{background:var(--code-bg); color:var(--code-ink); border-radius:10px; padding:16px 18px; overflow-x:auto; font-family:"SF Mono",Consolas,monospace; font-size:13.5px; line-height:1.6;}
+  pre code{background:none; color:inherit; padding:0; font-size:inherit;}
+  .k{color:var(--code-key)} .s{color:var(--code-str)} .c{color:var(--code-com)} .d{color:var(--code-dim)}
+  .lead{font-size:18px; color:var(--muted);}
+  .badge{display:inline-block; font-size:12px; font-weight:600; padding:2px 10px; border-radius:20px; background:var(--accent-soft); color:var(--accent); margin-right:6px;}
+  .pill{display:inline-block; font-size:12px; font-weight:600; padding:2px 9px; border-radius:6px;}
+  .pill.good{background:var(--good-soft); color:var(--good);}
+  .pill.warn{background:var(--warn-soft); color:var(--warn);}
+  .pill.bad{background:var(--bad-soft); color:var(--bad);}
+  /* callout boxes */
+  .box{border:1px solid var(--line); border-left-width:4px; border-radius:10px; padding:14px 18px; margin:18px 0; background:var(--panel);}
+  .box.why{border-left-color:var(--accent); background:var(--accent-soft);}
+  .box.good{border-left-color:var(--good); background:var(--good-soft);}
+  .box.warn{border-left-color:var(--warn); background:var(--warn-soft);}
+  .box.bad{border-left-color:var(--bad); background:var(--bad-soft);}
+  .box .t{font-weight:700; display:block; margin-bottom:4px;}
+  table{border-collapse:collapse; width:100%; margin:18px 0; font-size:14.5px; background:var(--panel); border-radius:10px; overflow:hidden;}
+  th,td{border:1px solid var(--line); padding:9px 12px; text-align:left; vertical-align:top;}
+  th{background:var(--accent-soft); color:var(--ink); font-weight:700;}
+  tr:nth-child(even) td{background:color-mix(in srgb, var(--panel) 92%, var(--line));}
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:20px 24px; margin:18px 0;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .filehdr{display:flex; align-items:center; gap:10px; margin:2em 0 .3em; padding:8px 14px; background:var(--code-bg); color:#fff; border-radius:8px 8px 0 0; font-family:monospace; font-size:14px;}
+  .filehdr .tag{font-size:11px; background:rgba(255,255,255,.15); padding:1px 8px; border-radius:20px;}
+  .filehdr + pre{border-top-left-radius:0; border-top-right-radius:0; margin-top:0;}
+  ol.lines{counter-reset:none; padding-left:20px;}
+  ol.lines li{margin:6px 0;}
+  ol.lines li b{color:var(--accent);}
+  .seq{font-family:monospace; font-size:13px; white-space:pre; overflow-x:auto; background:var(--code-bg); color:var(--code-ink); padding:18px; border-radius:10px;}
+  .qa{border:1px solid var(--line); border-radius:10px; margin:12px 0; background:var(--panel); padding:14px 18px;}
+  .qa .q{font-weight:700; color:var(--accent);}
+  .qa .q::before{content:"Q  "; color:var(--muted);}
+  .qa .a{margin-top:6px;}
+  .qa .a::before{content:"A  "; color:var(--muted); font-weight:700;}
+  .step{display:flex; gap:14px; margin:14px 0;}
+  .step .n{flex:0 0 34px; height:34px; border-radius:50%; background:var(--accent); color:#fff; display:grid; place-items:center; font-weight:700;}
+  .step .body{flex:1;}
+  hr{border:none; border-top:1px solid var(--line); margin:2.5em 0;}
+  .tocnote{font-size:13px; color:var(--muted);}
+  @media (max-width:860px){
+    .wrap{grid-template-columns:1fr;} nav{position:static; height:auto; border-right:none; border-bottom:1px solid var(--line);}
+    main{padding:24px;} .grid2{grid-template-columns:1fr;}
+  }
+  @media print{ nav{display:none;} .wrap{display:block;} main{padding:0;} pre{white-space:pre-wrap;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav>
+  <div class="top">🔐 Login Demo</div>
+  <div class="tocnote">Complete guide &amp; presentation script</div>
+  <h2>Part 1 — Understand</h2>
+  <a href="#overview">What we built</a>
+  <a href="#concepts">Core security concepts</a>
+  <a href="#architecture">Architecture &amp; data flow</a>
+  <h2>Part 2 — Choices</h2>
+  <a href="#stack">The stack: what &amp; why</a>
+  <a href="#alternatives">Alternatives we rejected</a>
+  <h2>Part 3 — The Code</h2>
+  <a href="#infra">Infra &amp; config</a>
+  <a href="#backend">Backend, line by line</a>
+  <a href="#frontend">Frontend, line by line</a>
+  <a href="#lifecycle">Full request lifecycle</a>
+  <h2>Part 4 — Present It</h2>
+  <a href="#present">Presentation guideline</a>
+  <a href="#demo">Live demo script</a>
+  <a href="#qa">Q&amp;A prep</a>
+  <a href="#next">What we skipped &amp; next</a>
+</nav>
+<main>
+
+<h1>Login Demo — The Complete Guide</h1>
+<p class="lead">A from-scratch authentication system: React + TypeScript → Spring Boot → PostgreSQL, using a stateless JWT delivered in an <b>httpOnly cookie</b>. This document explains <b>what</b> we used, <b>what else we could have used</b>, <b>why</b> we chose what we did, and walks through <b>every line of code</b> — then gives you a script to present it.</p>
+<p><span class="badge">Spring Boot 4.1</span><span class="badge">Java 21</span><span class="badge">React 19 + Vite</span><span class="badge">PostgreSQL 16</span><span class="badge">JWT (jjwt 0.12.6)</span><span class="badge">BCrypt</span></p>
+
+<div class="box why">
+<span class="t">How to read this doc</span>
+Parts 1–2 are the "story" you tell. Part 3 is your reference when someone points at a line and asks "what does that do?". Part 4 is the actual talk track. If you only have 20 minutes to prepare, read Part 1, the two tables in Part 2, and the <a href="#demo">demo script</a>.
+</div>
+
+<!-- ============================================================ -->
+<h2 id="overview">1 · What we built</h2>
+<p>A user can <b>register</b>, <b>log in</b>, see a <b>protected page</b> that greets them by email, stay logged in <b>across a page refresh</b>, and <b>log out</b>. That short list quietly exercises every hard part of authentication.</p>
+
+<div class="grid2">
+<div class="card">
+<h4>The 4 things the system does</h4>
+<ol>
+<li><b>Register</b> — store an account with a hashed password.</li>
+<li><b>Log in</b> — verify the password, hand back a signed token in a cookie.</li>
+<li><b>Stay logged in</b> — the browser resends the cookie; the server trusts the signature, not a memory of you.</li>
+<li><b>Log out</b> — server tells the browser to delete the cookie.</li>
+</ol>
+</div>
+<div class="card">
+<h4>The 5 threats it defends against</h4>
+<ul>
+<li><b>Password theft from the DB</b> → BCrypt one-way hashing.</li>
+<li><b>Token theft via XSS</b> → httpOnly cookie (JS can't read it).</li>
+<li><b>Cross-site request forgery</b> → SameSite=Lax cookie.</li>
+<li><b>User enumeration</b> → identical 401 for "no such user" and "wrong password".</li>
+<li><b>Cross-origin abuse</b> → CORS locked to one exact origin.</li>
+</ul>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="concepts">2 · Core security concepts (say these in your own words)</h2>
+<p>Before any code, these are the ideas the whole project is built on. If you can explain these five, you understand the project.</p>
+
+<h4>Authentication vs Authorization</h4>
+<p><b>Authentication (AuthN)</b> = "who are you?" (proving identity — the login). <b>Authorization (AuthZ)</b> = "what are you allowed to do?" (permissions). This demo is almost entirely authentication; the only authorization is the blunt rule "you must be logged in to see <code>/api/me</code>." No roles yet.</p>
+
+<h4>HTTP is stateless</h4>
+<p>Every HTTP request is independent — the server remembers <b>nothing</b> between requests by default. So after you log in, the very next request has no idea who you are. Something must travel <i>with each request</i> to re-prove identity. That "something" is our token. Two classic ways to carry it:</p>
+<ul>
+<li><b>Server-side sessions</b>: server stores a session in memory/DB, gives the browser a random session-id cookie. Stateful — the server must remember every logged-in user.</li>
+<li><b>Tokens (JWT)</b>: the proof itself travels with the request and is <i>self-verifying</i> via a signature. Stateless — the server stores nothing. <b>We chose this.</b></li>
+</ul>
+
+<h4>What a JWT actually is</h4>
+<p>A JWT is just a string of three Base64URL parts joined by dots: <code>header.payload.signature</code>.</p>
+<ul>
+<li><b>Header</b> — the algorithm, e.g. <code>{"alg":"HS512"}</code>.</li>
+<li><b>Payload</b> — the "claims": who (<code>sub</code>=email), when issued (<code>iat</code>), when it expires (<code>exp</code>). <b>This is only Base64, not encrypted — anyone can read it.</b> Never put secrets here.</li>
+<li><b>Signature</b> — <code>HMAC-SHA512(header.payload, secret)</code>. Only someone with the server's secret can produce it. Change one character of the payload and the signature no longer matches → the token is rejected.</li>
+</ul>
+<div class="box good"><span class="t">The key insight to say out loud</span>The server doesn't "remember" tokens. When a token comes back, the server re-computes the signature with its secret. If it matches, the token is authentic and un-tampered. That's how it stays stateless.</div>
+
+<h4>Why hash passwords with BCrypt (not store them, not "encrypt" them)</h4>
+<p>We never store the password. We store a <b>BCrypt hash</b> — a one-way function. You can go password→hash, never hash→password. On login we hash the attempt and compare. BCrypt also (a) mixes in a random <b>salt</b> so two identical passwords produce different hashes, and (b) is <b>deliberately slow</b>, so brute-forcing a stolen database is expensive. Encryption would be the wrong tool — encryption is reversible; we <i>want</i> irreversibility.</p>
+
+<h4>The XSS ↔ CSRF ↔ cookie trade-off (the crux of this project)</h4>
+<p>Where you store the token decides which attack you're exposed to:</p>
+<table>
+<tr><th>Store token in…</th><th>Exposed to XSS?</th><th>Exposed to CSRF?</th><th>Notes</th></tr>
+<tr><td><code>localStorage</code></td><td class="pill bad">Yes — JS reads it</td><td class="pill good">No</td><td>Any injected script can steal the token. Easy to code.</td></tr>
+<tr><td><b>httpOnly cookie</b> (our choice)</td><td class="pill good">No — JS can't read it</td><td class="pill warn">Yes → mitigate</td><td>Browser attaches it automatically; we add <code>SameSite=Lax</code> to blunt CSRF.</td></tr>
+</table>
+<p>We deliberately took the <b>harder</b> path (httpOnly cookie) because XSS token theft is silent and total, whereas CSRF has a well-known, cheap mitigation (<code>SameSite</code>). This choice is <i>why</i> the project also needs CORS-with-credentials — see the code.</p>
+
+<!-- ============================================================ -->
+<h2 id="architecture">3 · Architecture &amp; data flow</h2>
+<p>Three tiers, three ports, one cookie tying it together.</p>
+<div class="seq">┌─────────────────────┐        ┌──────────────────────────┐        ┌────────────────┐
+│  React + Vite       │  CORS  │  Spring Boot (Java 21)    │  JDBC  │  PostgreSQL 16 │
+│  localhost:5173     │ ─────► │  localhost:8080          │ ─────► │  localhost:5433│
+│  (browser UI)       │ ◄───── │  (REST API + security)   │ ◄───── │  (Docker)      │
+└─────────────────────┘ cookie └──────────────────────────┘        └────────────────┘
+      the browser holds the httpOnly "token" cookie and resends it automatically</div>
+
+<h4>The login sequence (we drew this before writing any code)</h4>
+<div class="seq">Browser                         Spring Boot                    Postgres
+   │  POST /api/auth/login          │                              │
+   │  {email, password}             │                              │
+   │ ─────────────────────────────► │  findByEmail(email)          │
+   │                                │ ───────────────────────────► │
+   │                                │ ◄─── User{email, hash} ───── │
+   │                                │  BCrypt.matches(pw, hash)?   │
+   │                                │  yes → JwtService.generate() │
+   │  200 OK                        │                              │
+   │  Set-Cookie: token=JWT;        │                              │
+   │     HttpOnly; SameSite=Lax     │                              │
+   │ ◄───────────────────────────── │                              │
+   │                                │                              │
+   │  GET /api/me  (cookie auto-attached)                          │
+   │ ─────────────────────────────► │  JwtFilter verifies signature│
+   │                                │  → SecurityContext = email   │
+   │  200 {email}                   │                              │
+   │ ◄───────────────────────────── │                              │</div>
+
+<!-- ============================================================ -->
+<h2 id="stack">4 · The stack — what we used &amp; why</h2>
+<table>
+<tr><th>Layer</th><th>We used</th><th>Why (the one-line reason)</th></tr>
+<tr><td>Frontend</td><td>React 19 + TypeScript, Vite</td><td>Industry-standard component model; TS catches type bugs at compile time; Vite = instant dev server.</td></tr>
+<tr><td>Routing</td><td>react-router-dom</td><td>Client-side routes (<code>/login</code>, <code>/register</code>, <code>/</code>) without full page reloads.</td></tr>
+<tr><td>Backend</td><td>Spring Boot 4.1, Java 21</td><td>Batteries-included: security, validation, JPA, embedded Tomcat in one framework.</td></tr>
+<tr><td>Security</td><td>Spring Security</td><td>Battle-tested filter chain; we plug our JWT filter into it rather than hand-rolling auth.</td></tr>
+<tr><td>Password hashing</td><td>BCrypt</td><td>Adaptive, salted, slow-by-design — the standard for password storage.</td></tr>
+<tr><td>Tokens</td><td>jjwt 0.12.6, HS512</td><td>Clean Java JWT library; symmetric signing is simplest for a single-service app.</td></tr>
+<tr><td>Persistence</td><td>Spring Data JPA (Hibernate)</td><td>We write an interface; Spring generates the SQL. <code>findByEmail</code> becomes a query for free.</td></tr>
+<tr><td>Database</td><td>PostgreSQL 16 (Docker)</td><td>Real production-grade DB; Docker makes it disposable and identical on any machine.</td></tr>
+<tr><td>Token transport</td><td>httpOnly cookie</td><td>XSS-resistant (JS can't read it); browser resends it automatically.</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="alternatives">5 · Alternatives we could have used — and why we didn't</h2>
+<p>This table is gold in a presentation: it shows you made <i>decisions</i>, not defaults.</p>
+<table>
+<tr><th>Decision point</th><th>What we picked</th><th>Alternatives</th><th>Why we chose ours</th></tr>
+<tr>
+  <td>Token storage</td>
+  <td><b>httpOnly cookie</b></td>
+  <td>localStorage / sessionStorage; in-memory JS variable</td>
+  <td>localStorage is readable by any XSS script → silent token theft. A cookie with <code>HttpOnly</code> is invisible to JS. We accepted the CSRF surface because <code>SameSite</code> handles it cheaply.</td>
+</tr>
+<tr>
+  <td>Session strategy</td>
+  <td><b>Stateless JWT</b></td>
+  <td>Server-side sessions (Spring Session + Redis)</td>
+  <td>No session store to run or scale; the token verifies itself. Trade-off: you can't instantly revoke a JWT (mitigated by short 15-min expiry).</td>
+</tr>
+<tr>
+  <td>JWT signing</td>
+  <td><b>HMAC (HS512), symmetric</b></td>
+  <td>RSA/ECDSA (RS256), asymmetric</td>
+  <td>One service issues and verifies the token, so one shared secret is simplest. Asymmetric keys matter when a <i>different</i> service must verify without being able to sign.</td>
+</tr>
+<tr>
+  <td>Database</td>
+  <td><b>PostgreSQL in Docker</b></td>
+  <td>H2 in-memory; MySQL; SQLite</td>
+  <td>We wanted a real, persistent, production-like DB (H2 vanishes on restart). Docker keeps it isolated and reproducible. Postgres on <b>port 5433</b> to avoid clashing with a native Postgres 17.</td>
+</tr>
+<tr>
+  <td>Password hash</td>
+  <td><b>BCrypt</b></td>
+  <td>Argon2, PBKDF2; SHA-256; plaintext</td>
+  <td>BCrypt is the well-supported default in Spring Security. Argon2 is arguably stronger but adds config; plain SHA-256 is too fast (brute-forceable); plaintext is negligence.</td>
+</tr>
+<tr>
+  <td>Build tool (FE)</td>
+  <td><b>Vite</b></td>
+  <td>Create-React-App; Webpack; Next.js</td>
+  <td>Vite is fast and minimal. Next.js would add SSR/routing we don't need for a demo. CRA is effectively deprecated.</td>
+</tr>
+<tr>
+  <td>DTOs</td>
+  <td><b>Java records</b></td>
+  <td>Classes with Lombok; plain POJOs</td>
+  <td>Records are immutable, boilerplate-free, and built into Java 21 — perfect for request/response shapes.</td>
+</tr>
+</table>
+
+<div class="box warn"><span class="t">Honest trade-offs to mention (shows maturity)</span>
+<ul style="margin:6px 0 0">
+<li><b>JWTs can't be instantly revoked.</b> If a token leaks, it's valid until it expires. We limit the blast radius with a <b>15-minute</b> lifetime and no refresh token yet.</li>
+<li><b>We disabled CSRF protection in Spring</b> <i>for now</i> because the SPA flow needs a matching token strategy; the cookie's <code>SameSite=Lax</code> is our current CSRF defense. Turning Spring's CSRF back on is a listed next step.</li>
+<li><b>Secret is in <code>application.properties</code></b> — fine for dev, but in production it must come from an environment variable / secret manager.</li>
+</ul>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="infra">6 · The code — infrastructure &amp; config</h2>
+
+<div class="filehdr">🐳 docker-compose.yml <span class="tag">database</span></div>
+<pre><code><span class="k">services:</span>
+  <span class="k">db:</span>
+    <span class="k">image:</span> postgres:16              <span class="c"># the exact Postgres version, pinned</span>
+    <span class="k">container_name:</span> login-demo-db
+    <span class="k">environment:</span>
+      <span class="k">POSTGRES_DB:</span> login_demo        <span class="c"># DB created on first boot</span>
+      <span class="k">POSTGRES_USER:</span> login
+      <span class="k">POSTGRES_PASSWORD:</span> login_dev_pw
+    <span class="k">ports:</span>
+      - <span class="s">"5433:5432"</span>              <span class="c"># host 5433 → container 5432 (dodges native PG17)</span>
+    <span class="k">volumes:</span>
+      - login_pgdata:/var/lib/postgresql/data   <span class="c"># data survives container restarts</span>
+<span class="k">volumes:</span>
+  <span class="k">login_pgdata:</span></code></pre>
+<ol class="lines">
+<li><b>image: postgres:16</b> — pins the version so the DB is identical on every machine.</li>
+<li><b>ports "5433:5432"</b> — Postgres speaks 5432 <i>inside</i> the container; we expose it on <b>5433</b> on the host so it doesn't collide with a natively-installed Postgres 17.</li>
+<li><b>volumes login_pgdata</b> — a named volume so your users table isn't wiped when the container stops. This is what makes the data "persistent."</li>
+</ol>
+
+<div class="filehdr">⚙️ application.properties <span class="tag">backend config</span></div>
+<pre><code><span class="k">spring.datasource.url</span>=jdbc:postgresql://localhost:5433/login_demo
+<span class="k">spring.datasource.username</span>=login
+<span class="k">spring.datasource.password</span>=login_dev_pw
+
+<span class="k">spring.jpa.hibernate.ddl-auto</span>=update     <span class="c"># auto-create/alter tables from entities</span>
+<span class="k">spring.jpa.show-sql</span>=true                 <span class="c"># log the SQL Hibernate runs (learning aid)</span>
+
+<span class="k">app.jwt.secret</span>=this-is-a-dev-only-jwt-secret-...-0123456789
+<span class="k">app.jwt.expiration-ms</span>=900000              <span class="c"># 15 minutes</span></code></pre>
+<ol class="lines">
+<li><b>datasource.url … :5433/login_demo</b> — matches the Docker port and DB name exactly.</li>
+<li><b>ddl-auto=update</b> — Hibernate reads your <code>@Entity</code> classes and creates/updates tables automatically. Great for dev; in production you'd use versioned migrations (Flyway/Liquibase) instead.</li>
+<li><b>app.jwt.secret</b> — the HMAC signing key. It's long (&gt;512 bits) which is <i>why</i> jjwt auto-selects HS512. In prod this comes from an env var, never source control.</li>
+<li><b>app.jwt.expiration-ms=900000</b> — 900,000 ms = 15 minutes. The token dies after this, limiting damage if stolen.</li>
+</ol>
+
+<div class="filehdr">📦 pom.xml <span class="tag">dependencies</span></div>
+<p>The key dependencies and what each unlocks:</p>
+<table>
+<tr><th>Dependency</th><th>Gives us</th></tr>
+<tr><td><code>spring-boot-starter-webmvc</code></td><td>REST controllers, embedded Tomcat on :8080.</td></tr>
+<tr><td><code>spring-boot-starter-security</code></td><td>The security filter chain, <code>PasswordEncoder</code>, <code>BCrypt</code>.</td></tr>
+<tr><td><code>spring-boot-starter-data-jpa</code></td><td>Repositories + Hibernate ORM (entity ↔ table).</td></tr>
+<tr><td><code>spring-boot-starter-validation</code></td><td><code>@Email</code>, <code>@NotBlank</code>, <code>@Size</code> bean validation.</td></tr>
+<tr><td><code>postgresql</code></td><td>The JDBC driver that actually talks to Postgres.</td></tr>
+<tr><td><code>jjwt-api / -impl / -jackson</code> 0.12.6</td><td>Create &amp; verify JWTs.</td></tr>
+</table>
+<div class="box why"><span class="t">Environment fixes baked into pom.xml (this machine)</span>Three durable fixes live in the build config: a <code>-Duser.timezone=Asia/Kolkata</code> JVM arg (fixes a pgjdbc "Asia/Calcutta" timezone error), an explicit <code>&lt;mainClass&gt;</code> (stops an intermittent class-scan flake), and — most important — the build <code>&lt;directory&gt;</code> moved <b>out of OneDrive</b> to <code>C:/Users/yathi/login-demo-build</code>, because OneDrive/Defender was locking freshly-compiled <code>.class</code> files mid-build.</div>
+
+<!-- ============================================================ -->
+<h2 id="backend">7 · Backend — line by line</h2>
+<p>We use <b>package-by-feature</b>: <code>user/</code> (the data), <code>auth/</code> (login logic), <code>config/</code> (security wiring). Here's every file in the order data flows.</p>
+
+<h3>7.1 · The data — <code>user/User.java</code></h3>
+<div class="filehdr">👤 User.java <span class="tag">JPA entity</span></div>
+<pre><code><span class="k">@Entity</span>
+<span class="k">@Table</span>(name = <span class="s">"users"</span>)
+<span class="k">public class</span> User {
+
+    <span class="k">@Id</span>
+    <span class="k">@GeneratedValue</span>(strategy = GenerationType.IDENTITY)
+    <span class="k">private</span> Long id;
+
+    <span class="k">@Column</span>(nullable = false, unique = true)
+    <span class="k">private</span> String email;
+
+    <span class="k">@Column</span>(name = <span class="s">"password_hash"</span>, nullable = false)
+    <span class="k">private</span> String passwordHash;
+
+    <span class="k">@Column</span>(name = <span class="s">"created_at"</span>, nullable = false)
+    <span class="k">private</span> Instant createdAt = Instant.now();
+
+    <span class="k">protected</span> User() {}   <span class="c">// JPA requires a no-arg constructor</span>
+
+    <span class="k">public</span> User(String email, String passwordHash) {
+        <span class="k">this</span>.email = email;
+        <span class="k">this</span>.passwordHash = passwordHash;
+    }
+    <span class="c">// getters only — no setters, so a User is effectively immutable after creation</span>
+}</code></pre>
+<ol class="lines">
+<li><b>@Entity + @Table("users")</b> — tells Hibernate "this class is a row in the <code>users</code> table." Because of <code>ddl-auto=update</code>, the table is created from these fields.</li>
+<li><b>@Id + @GeneratedValue(IDENTITY)</b> — <code>id</code> is the primary key; the database auto-increments it.</li>
+<li><b>email @Column(unique=true)</b> — a DB-level uniqueness constraint: two users can't share an email even if the app check is bypassed.</li>
+<li><b>passwordHash</b> — note the name: we store the <b>hash</b>, never the password. Column is <code>NOT NULL</code>.</li>
+<li><b>createdAt = Instant.now()</b> — audit timestamp, set at object creation.</li>
+<li><b>protected no-arg constructor</b> — JPA/Hibernate constructs entities reflectively and needs this; <code>protected</code> discourages app code from using it.</li>
+<li><b>Getters only, no setters</b> — once created, a User doesn't change here, which prevents accidental mutation.</li>
+</ol>
+
+<h3>7.2 · The queries — <code>user/UserRepository.java</code></h3>
+<div class="filehdr">🗄️ UserRepository.java <span class="tag">Spring Data JPA</span></div>
+<pre><code><span class="k">public interface</span> UserRepository <span class="k">extends</span> JpaRepository&lt;User, Long&gt; {
+    Optional&lt;User&gt; findByEmail(String email);
+    <span class="k">boolean</span> existsByEmail(String email);
+}</code></pre>
+<ol class="lines">
+<li><b>extends JpaRepository&lt;User, Long&gt;</b> — inheriting this gives us <code>save()</code>, <code>findById()</code>, <code>delete()</code>, etc. for free. <code>User</code> = entity type, <code>Long</code> = id type.</li>
+<li><b>findByEmail</b> — we write <i>only the method name</i>; Spring parses "findBy + Email" and generates <code>SELECT * FROM users WHERE email = ?</code>. Returns <code>Optional</code> (may be empty) so we're forced to handle "not found."</li>
+<li><b>existsByEmail</b> — generates a cheap <code>SELECT COUNT</code> / exists query; used to reject duplicate registrations.</li>
+</ol>
+<div class="box good"><span class="t">Talking point</span>This interface has <b>zero implementation</b> and yet works. That's the magic of Spring Data: <i>derived query methods</i>. It's the single most impressive "look how little code" moment in the demo.</div>
+
+<h3>7.3 · The data shapes — DTOs (records)</h3>
+<div class="filehdr">📨 RegisterRequest.java / LoginRequest.java / LoginResponse.java / MeResponse.java</div>
+<pre><code><span class="k">public record</span> RegisterRequest(
+    <span class="k">@Email @NotBlank</span> String email,
+    <span class="k">@NotBlank @Size</span>(min = 8, message = <span class="s">"Password must be at least 8 characters"</span>)
+    String password
+) {}
+
+<span class="k">public record</span> LoginRequest(<span class="k">@Email @NotBlank</span> String email, <span class="k">@NotBlank</span> String password) {}
+<span class="k">public record</span> LoginResponse(String email) {}
+<span class="k">public record</span> MeResponse(String email) {}</code></pre>
+<ol class="lines">
+<li><b>record</b> — a compact, immutable data carrier. One line replaces a whole class with fields, constructor, getters, <code>equals</code>/<code>hashCode</code>.</li>
+<li><b>@Email @NotBlank</b> — validation runs <i>before</i> your controller code. A malformed email → automatic <b>400 Bad Request</b>, you write no if-statements.</li>
+<li><b>@Size(min=8)</b> on register only — server-side enforcement of the password rule. The frontend checks too, but the server is the real gate (never trust the client).</li>
+<li><b>Separate Request vs Response records</b> — the client never sends a password hash, and we never return one. Different shapes for different directions = safer API.</li>
+</ol>
+
+<h3>7.4 · The token engine — <code>auth/JwtService.java</code></h3>
+<div class="filehdr">🔑 JwtService.java <span class="tag">create &amp; verify JWTs</span></div>
+<pre><code><span class="k">@Service</span>
+<span class="k">public class</span> JwtService {
+
+    <span class="k">private final</span> SecretKey key;
+    <span class="k">private final long</span> expirationMs;
+
+    <span class="k">public</span> JwtService(<span class="k">@Value</span>(<span class="s">"${app.jwt.secret}"</span>) String secret,
+                      <span class="k">@Value</span>(<span class="s">"${app.jwt.expiration-ms}"</span>) <span class="k">long</span> expirationMs) {
+        <span class="k">this</span>.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+        <span class="k">this</span>.expirationMs = expirationMs;
+    }
+
+    <span class="k">public</span> String generateToken(String email) {
+        Date now = <span class="k">new</span> Date();
+        Date expiry = <span class="k">new</span> Date(now.getTime() + expirationMs);
+        <span class="k">return</span> Jwts.builder()
+                .subject(email)      <span class="c">// "sub" claim = who</span>
+                .issuedAt(now)       <span class="c">// "iat"</span>
+                .expiration(expiry)  <span class="c">// "exp"</span>
+                .signWith(key)       <span class="c">// HMAC signature (HS512, inferred from key size)</span>
+                .compact();          <span class="c">// → "header.payload.signature"</span>
+    }
+
+    <span class="k">public</span> String extractEmail(String token) {
+        Claims claims = Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)  <span class="c">// throws if signature wrong OR expired</span>
+                .getPayload();
+        <span class="k">return</span> claims.getSubject();
+    }
+}</code></pre>
+<ol class="lines">
+<li><b>@Service</b> — registers this as a Spring-managed singleton so it can be injected anywhere.</li>
+<li><b>@Value("${app.jwt.secret}")</b> — Spring pulls the secret and expiry straight from <code>application.properties</code> into the constructor.</li>
+<li><b>Keys.hmacShaKeyFor(secret.getBytes(...))</b> — turns the text secret into a cryptographic key. Because the secret is &gt;512 bits, jjwt upgrades to <b>HS512</b> automatically.</li>
+<li><b>generateToken</b>: compute <code>now</code> and <code>expiry = now + 15min</code>, then build claims (<code>sub</code>=email, <code>iat</code>, <code>exp</code>), <b>sign</b> with the key, and <code>compact()</code> into the dotted string.</li>
+<li><b>extractEmail</b>: <code>verifyWith(key)</code> + <code>parseSignedClaims</code> re-checks the signature and expiry. If the token was tampered with or is expired, this <b>throws</b> — which is exactly how the filter knows to reject it.</li>
+<li><b>getSubject()</b> — pulls the email back out of the verified payload.</li>
+</ol>
+
+<h3>7.5 · The security wiring — <code>config/SecurityConfig.java</code></h3>
+<div class="filehdr">🛡️ SecurityConfig.java <span class="tag">the rulebook</span></div>
+<pre><code><span class="k">@Bean</span>
+<span class="k">public</span> PasswordEncoder passwordEncoder() {
+    <span class="k">return new</span> BCryptPasswordEncoder();
+}
+
+<span class="k">@Bean</span>
+<span class="k">public</span> SecurityFilterChain filterChain(HttpSecurity http,
+        JwtAuthenticationFilter jwtAuthenticationFilter) <span class="k">throws</span> Exception {
+    http
+        .cors(Customizer.withDefaults())                       <span class="c">// ① enable CORS (bean below)</span>
+        .csrf(csrf -> csrf.disable())                          <span class="c">// ② off for now (SPA + SameSite)</span>
+        .sessionManagement(sm -> sm.sessionCreationPolicy(STATELESS))  <span class="c">// ③ no server sessions</span>
+        .authorizeHttpRequests(auth -> auth
+            .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()  <span class="c">// ④ let errors render</span>
+            .requestMatchers(<span class="s">"/api/auth/**"</span>).permitAll()          <span class="c">// ⑤ login/register public</span>
+            .anyRequest().authenticated()                      <span class="c">// ⑥ everything else needs auth</span>
+        )
+        .exceptionHandling(e -> e.authenticationEntryPoint(
+            <span class="k">new</span> HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))    <span class="c">// ⑦ return 401, not a login redirect</span>
+        .addFilterBefore(jwtAuthenticationFilter,
+            UsernamePasswordAuthenticationFilter.class);       <span class="c">// ⑧ run OUR filter early</span>
+    <span class="k">return</span> http.build();
+}
+
+<span class="k">@Bean</span>
+<span class="k">public</span> CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration config = <span class="k">new</span> CorsConfiguration();
+    config.setAllowedOrigins(List.of(<span class="s">"http://localhost:5173"</span>));   <span class="c">// exact origin, not "*"</span>
+    config.setAllowedMethods(List.of(<span class="s">"GET","POST","PUT","DELETE","OPTIONS"</span>));
+    config.setAllowedHeaders(List.of(<span class="s">"Content-Type"</span>));
+    config.setAllowCredentials(<span class="k">true</span>);                            <span class="c">// allow the cookie</span>
+    <span class="c">// ...register this config for every path /**</span>
+}</code></pre>
+<ol class="lines">
+<li><b>passwordEncoder() bean → BCrypt</b> — one bean, injected wherever we hash/verify passwords.</li>
+<li><b>① .cors(...)</b> — turns on CORS using the config bean at the bottom. Needed because <code>:5173</code> and <code>:8080</code> are <i>different origins</i>.</li>
+<li><b>② .csrf(disable)</b> — deliberately off for this SPA phase; <code>SameSite=Lax</code> on the cookie is our current CSRF defense. (Re-enabling is a next step.)</li>
+<li><b>③ STATELESS</b> — tells Spring "never create an HTTP session." This <i>enforces</i> our JWT design; identity must come from the token every time.</li>
+<li><b>④ ERROR dispatch permitAll</b> — lets Spring's error pages render so a 400 doesn't get masked into a confusing 401/403.</li>
+<li><b>⑤ /api/auth/** permitAll</b> — register &amp; login <i>must</i> be reachable without a token (chicken-and-egg: you can't have a token before you log in).</li>
+<li><b>⑥ anyRequest().authenticated()</b> — the default-deny rule: everything else (like <code>/api/me</code>) requires a valid authentication.</li>
+<li><b>⑦ HttpStatusEntryPoint(401)</b> — for an API we want a clean <b>401</b>, not Spring's default redirect to a login HTML page.</li>
+<li><b>⑧ addFilterBefore(jwtFilter, ...)</b> — inserts our JWT filter early in the chain so identity is established <i>before</i> the authorization checks run.</li>
+<li><b>CORS bean</b> — <code>setAllowedOrigins("http://localhost:5173")</code> is an <b>exact</b> origin (a wildcard <code>*</code> is illegal once <code>setAllowCredentials(true)</code> is set — the browser refuses to send cookies to a wildcard origin). This pairing is the whole reason CORS was a milestone.</li>
+</ol>
+
+<h3>7.6 · The gatekeeper — <code>auth/JwtAuthenticationFilter.java</code></h3>
+<div class="filehdr">🚧 JwtAuthenticationFilter.java <span class="tag">runs on every request</span></div>
+<pre><code><span class="k">@Component</span>
+<span class="k">public class</span> JwtAuthenticationFilter <span class="k">extends</span> OncePerRequestFilter {
+
+    <span class="k">protected void</span> doFilterInternal(HttpServletRequest request,
+            HttpServletResponse response, FilterChain filterChain) {
+
+        String token = readTokenCookie(request);                <span class="c">// pull "token" cookie</span>
+
+        <span class="k">if</span> (token != <span class="k">null</span> &amp;&amp; SecurityContextHolder.getContext()
+                                    .getAuthentication() == <span class="k">null</span>) {
+            <span class="k">try</span> {
+                String email = jwtService.extractEmail(token);  <span class="c">// verify sig + expiry</span>
+                <span class="k">var</span> auth = <span class="k">new</span> UsernamePasswordAuthenticationToken(
+                        email, <span class="k">null</span>, Collections.emptyList());
+                auth.setDetails(<span class="k">new</span> WebAuthenticationDetailsSource()
+                        .buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(auth);  <span class="c">// "logged in"</span>
+            } <span class="k">catch</span> (Exception e) {
+                <span class="c">// bad/expired token → stay anonymous → protected routes 401</span>
+            }
+        }
+        filterChain.doFilter(request, response);                <span class="c">// continue the chain</span>
+    }
+}</code></pre>
+<ol class="lines">
+<li><b>extends OncePerRequestFilter</b> — guarantees this runs exactly once per HTTP request.</li>
+<li><b>readTokenCookie(request)</b> — loops the request's cookies looking for one named <code>token</code>; returns its value or <code>null</code>.</li>
+<li><b>if token != null &amp;&amp; authentication == null</b> — only try to authenticate if there's a token and nobody's authenticated yet.</li>
+<li><b>jwtService.extractEmail(token)</b> — the verification step. If the token is forged or expired it throws, and we fall into the empty <code>catch</code> → the request stays anonymous.</li>
+<li><b>new UsernamePasswordAuthenticationToken(email, null, emptyList())</b> — builds Spring's "this request is authenticated as <i>email</i>" object. <code>null</code> credentials (we don't keep the password), empty list = no roles.</li>
+<li><b>SecurityContextHolder…setAuthentication(auth)</b> — <b>this is the moment the user becomes "logged in"</b> for this request. Downstream, <code>anyRequest().authenticated()</code> now passes.</li>
+<li><b>empty catch</b> — intentional: an invalid token isn't an error to shout about; it just means "not authenticated," and the 401 happens naturally later.</li>
+<li><b>filterChain.doFilter(...)</b> — hand off to the next filter/controller either way.</li>
+</ol>
+
+<h3>7.7 · The endpoints — <code>auth/AuthController.java</code></h3>
+<div class="filehdr">🎯 AuthController.java <span class="tag">/api/auth/*</span></div>
+<pre><code><span class="k">@PostMapping</span>(<span class="s">"/register"</span>)
+<span class="k">public</span> ResponseEntity&lt;Void&gt; register(<span class="k">@Valid @RequestBody</span> RegisterRequest req) {
+    <span class="k">if</span> (userRepository.existsByEmail(req.email()))
+        <span class="k">return</span> ResponseEntity.status(CONFLICT).build();          <span class="c">// 409 duplicate</span>
+    String hash = passwordEncoder.encode(req.password());        <span class="c">// BCrypt hash</span>
+    userRepository.save(<span class="k">new</span> User(req.email(), hash));
+    <span class="k">return</span> ResponseEntity.status(CREATED).build();               <span class="c">// 201</span>
+}
+
+<span class="k">@PostMapping</span>(<span class="s">"/login"</span>)
+<span class="k">public</span> ResponseEntity&lt;LoginResponse&gt; login(<span class="k">@Valid @RequestBody</span> LoginRequest req) {
+    User user = userRepository.findByEmail(req.email()).orElse(<span class="k">null</span>);
+    <span class="k">if</span> (user == <span class="k">null</span> || !passwordEncoder.matches(req.password(), user.getPasswordHash()))
+        <span class="k">return</span> ResponseEntity.status(UNAUTHORIZED).build();      <span class="c">// 401 — same for both cases</span>
+
+    String token = jwtService.generateToken(user.getEmail());
+    ResponseCookie cookie = ResponseCookie.from(<span class="s">"token"</span>, token)
+            .httpOnly(<span class="k">true</span>)          <span class="c">// JS cannot read it (XSS defense)</span>
+            .secure(<span class="k">false</span>)          <span class="c">// dev only; MUST be true over HTTPS in prod</span>
+            .path(<span class="s">"/"</span>)              <span class="c">// sent on every path</span>
+            .sameSite(<span class="s">"Lax"</span>)        <span class="c">// CSRF mitigation</span>
+            .maxAge(Duration.ofMillis(jwtExpirationMs))
+            .build();
+    <span class="k">return</span> ResponseEntity.ok()
+            .header(HttpHeaders.SET_COOKIE, cookie.toString())
+            .body(<span class="k">new</span> LoginResponse(user.getEmail()));
+}
+
+<span class="k">@PostMapping</span>(<span class="s">"/logout"</span>)
+<span class="k">public</span> ResponseEntity&lt;Void&gt; logout() {
+    ResponseCookie cookie = ResponseCookie.from(<span class="s">"token"</span>, <span class="s">""</span>)  <span class="c">// empty value</span>
+            .httpOnly(<span class="k">true</span>).secure(<span class="k">false</span>).path(<span class="s">"/"</span>).sameSite(<span class="s">"Lax"</span>)
+            .maxAge(0)               <span class="c">// expire immediately → browser deletes it</span>
+            .build();
+    <span class="k">return</span> ResponseEntity.noContent()
+            .header(HttpHeaders.SET_COOKIE, cookie.toString()).build();  <span class="c">// 204</span>
+}</code></pre>
+<ol class="lines">
+<li><b>@RestController @RequestMapping("/api/auth")</b> — every method here lives under <code>/api/auth</code>; return values become JSON.</li>
+<li><b>Constructor injection</b> — <code>UserRepository</code>, <code>PasswordEncoder</code>, <code>JwtService</code>, and the expiry value are injected by Spring (no <code>new</code>, no globals).</li>
+<li><b>register → @Valid</b> — validation fires first; bad input never reaches your logic.</li>
+<li><b>existsByEmail → 409</b> — duplicate email is rejected with <b>409 Conflict</b>.</li>
+<li><b>passwordEncoder.encode</b> — BCrypt-hashes the password (with a random salt) before saving. The plaintext never touches the DB.</li>
+<li><b>login → findByEmail(...).orElse(null)</b> — look the user up.</li>
+<li><b>the combined <code>if</code></b> — "no such user OR wrong password" both return the <b>same 401</b>. This prevents <i>user enumeration</i> (an attacker can't discover which emails exist).</li>
+<li><b>passwordEncoder.matches(raw, hash)</b> — BCrypt re-hashes the attempt with the stored salt and compares. We never decrypt anything.</li>
+<li><b>ResponseCookie … httpOnly(true)</b> — the security-defining line: the browser stores it but JavaScript literally cannot read <code>document.cookie</code> for it.</li>
+<li><b>secure(false)</b> — allowed only because dev is plain <code>http://localhost</code>; in production this <b>must</b> be <code>true</code> so the cookie is HTTPS-only.</li>
+<li><b>sameSite("Lax")</b> — the browser won't attach this cookie on most cross-site requests → CSRF mitigation.</li>
+<li><b>maxAge = 15 min</b> — cookie lifetime matches the JWT expiry.</li>
+<li><b>logout</b> — you can't delete an httpOnly cookie from JS, so the <b>server</b> overwrites it with an empty value and <code>maxAge=0</code>, telling the browser to drop it. Returns <b>204 No Content</b>.</li>
+</ol>
+
+<h3>7.8 · The protected endpoint — <code>auth/MeController.java</code></h3>
+<div class="filehdr">🙋 MeController.java <span class="tag">/api/me</span></div>
+<pre><code><span class="k">@GetMapping</span>(<span class="s">"/me"</span>)
+<span class="k">public</span> MeResponse me(Authentication authentication) {
+    String email = (String) authentication.getPrincipal();
+    <span class="k">return new</span> MeResponse(email);
+}</code></pre>
+<ol class="lines">
+<li><b>No token check here!</b> By the time this method runs, the filter (7.6) has already authenticated the request — or the security chain returned 401 and we never got here.</li>
+<li><b>Authentication parameter</b> — Spring injects the object our filter put in the <code>SecurityContext</code>.</li>
+<li><b>getPrincipal()</b> — returns the email we stored as the principal; we wrap it in <code>MeResponse</code> → <code>{"email":"…"}</code>. This is the call the frontend uses to answer "am I still logged in?"</li>
+</ol>
+
+<!-- ============================================================ -->
+<h2 id="frontend">8 · Frontend — line by line</h2>
+
+<h3>8.1 · The API layer — <code>src/api.ts</code></h3>
+<div class="filehdr">🌐 api.ts <span class="tag">fetch wrapper</span></div>
+<pre><code><span class="k">const</span> BASE = <span class="s">"http://localhost:8080"</span>;
+
+<span class="k">async function</span> request&lt;T&gt;(path, options = {}): Promise&lt;T&gt; {
+  <span class="k">const</span> res = <span class="k">await</span> fetch(`${BASE}${path}`, {
+    method: options.method ?? <span class="s">"GET"</span>,
+    credentials: <span class="s">"include"</span>,                     <span class="c">// ★ send & receive the cookie</span>
+    headers: { <span class="s">"Content-Type"</span>: <span class="s">"application/json"</span> },
+    body: options.body,
+  });
+  <span class="k">if</span> (!res.ok) <span class="k">throw new</span> ApiError(res.status);  <span class="c">// non-2xx → typed error</span>
+  <span class="k">const</span> text = <span class="k">await</span> res.text();
+  <span class="k">return</span> (text ? JSON.parse(text) : undefined);
+}
+
+<span class="k">export function</span> register(email, password) { <span class="k">return</span> request(<span class="s">"/api/auth/register"</span>, {method:<span class="s">"POST"</span>, body: JSON.stringify({email,password})}); }
+<span class="k">export function</span> login(...)  { <span class="k">return</span> request(<span class="s">"/api/auth/login"</span>, ...); }
+<span class="k">export function</span> me()       { <span class="k">return</span> request(<span class="s">"/api/me"</span>); }
+<span class="k">export function</span> logout()   { <span class="k">return</span> request(<span class="s">"/api/auth/logout"</span>, {method:<span class="s">"POST"</span>}); }</code></pre>
+<ol class="lines">
+<li><b>credentials: "include"</b> — <b>the single most important line in the frontend.</b> Without it, <code>fetch</code> will neither send nor store cross-origin cookies, and login would silently "work" but every following request would be anonymous.</li>
+<li><b>ApiError(res.status)</b> — we throw a typed error carrying the HTTP status so pages can say "401 → wrong password" vs "409 → email taken."</li>
+<li><b>text ? JSON.parse : undefined</b> — handles endpoints like logout (204) that return an empty body without crashing <code>JSON.parse</code>.</li>
+<li><b>Four thin exports</b> — the rest of the app calls <code>login()</code>, <code>me()</code>, etc. and never touches <code>fetch</code> details again.</li>
+</ol>
+
+<h3>8.2 · The auth brain — <code>src/auth/AuthContext.tsx</code></h3>
+<div class="filehdr">🧠 AuthContext.tsx <span class="tag">global auth state</span></div>
+<pre><code><span class="k">export function</span> AuthProvider({ children }) {
+  <span class="k">const</span> [email, setEmail] = useState&lt;string|null&gt;(<span class="k">null</span>);
+  <span class="k">const</span> [loading, setLoading] = useState(<span class="k">true</span>);
+
+  useEffect(() => {                          <span class="c">// runs once on app load</span>
+    apiMe()                                  <span class="c">// "who am I?" using whatever cookie exists</span>
+      .then(res => setEmail(res.email))      <span class="c">// 200 → logged in</span>
+      .catch(() => setEmail(<span class="k">null</span>))         <span class="c">// 401 → not logged in</span>
+      .finally(() => setLoading(<span class="k">false</span>));
+  }, []);
+
+  <span class="k">async function</span> login(e, p) { <span class="k">const</span> res = <span class="k">await</span> apiLogin(e,p); setEmail(res.email); }
+  <span class="k">async function</span> logout()   { <span class="k">await</span> apiLogout(); setEmail(<span class="k">null</span>); }
+
+  <span class="k">return</span> &lt;AuthContext.Provider value={{email, loading, login, logout}}&gt;{children}&lt;/&gt;;
+}</code></pre>
+<ol class="lines">
+<li><b>useState(email, loading)</b> — the app's single source of truth for "who is logged in" and "are we still checking."</li>
+<li><b>useEffect(..., [])</b> — the <b>refresh-persistence mechanism.</b> On every fresh page load it calls <code>/api/me</code>. The browser still holds the httpOnly cookie, so the server answers 200 with your email — and you're logged in again <i>without re-entering your password.</i> This is exactly the behaviour you verified.</li>
+<li><b>catch → setEmail(null)</b> — a 401 (no/expired cookie) just means "not logged in," handled quietly.</li>
+<li><b>loading flag</b> — critical: until <code>/api/me</code> answers we don't yet know the auth state, so the route guard must wait (see 8.3) rather than flash the login page.</li>
+<li><b>login() / logout()</b> — call the API then update state; because state lives in context, the whole UI re-renders in sync.</li>
+</ol>
+
+<h3>8.3 · The route guard — <code>src/routes/ProtectedRoute.tsx</code></h3>
+<div class="filehdr">🚦 ProtectedRoute.tsx</div>
+<pre><code><span class="k">export function</span> ProtectedRoute({ children }) {
+  <span class="k">const</span> { email, loading } = useAuth();
+  <span class="k">if</span> (loading) <span class="k">return</span> &lt;p&gt;Loading…&lt;/p&gt;;         <span class="c">// wait for /api/me before deciding</span>
+  <span class="k">if</span> (!email)  <span class="k">return</span> &lt;Navigate to=<span class="s">"/login"</span> replace /&gt;;  <span class="c">// not logged in → bounce</span>
+  <span class="k">return</span> &lt;&gt;{children}&lt;/&gt;;                     <span class="c">// logged in → show the page</span>
+}</code></pre>
+<ol class="lines">
+<li><b>if (loading)</b> — while the initial <code>/api/me</code> is in flight we render a placeholder. Skipping this would flash "/login" for a split second on every refresh even when logged in.</li>
+<li><b>if (!email) → Navigate to /login</b> — no user → redirect. <code>replace</code> avoids polluting browser history.</li>
+<li><b>else render children</b> — authenticated, so show the protected page.</li>
+</ol>
+
+<h3>8.4 · The pages &amp; wiring</h3>
+<table>
+<tr><th>File</th><th>What it does</th></tr>
+<tr><td><code>pages/LoginPage.tsx</code></td><td>Controlled email/password inputs; on submit calls <code>login()</code>, then <code>navigate("/")</code>. Maps a 401 to "Invalid email or password."</td></tr>
+<tr><td><code>pages/RegisterPage.tsx</code></td><td>Same shape; client-side "≥8 chars" check for fast feedback (server still enforces it); maps 409 to "email already registered," then sends you to <code>/login</code>.</td></tr>
+<tr><td><code>pages/DashboardPage.tsx</code></td><td>The protected page: shows <code>Welcome, {email}</code> from context and a Log out button.</td></tr>
+<tr><td><code>App.tsx</code></td><td>Declares routes: <code>/login</code>, <code>/register</code> public; <code>/</code> wrapped in <code>&lt;ProtectedRoute&gt;</code>.</td></tr>
+<tr><td><code>main.tsx</code></td><td>Mounts the app inside <code>&lt;BrowserRouter&gt; → &lt;AuthProvider&gt; → &lt;App/&gt;</code> so routing and auth state are available everywhere.</td></tr>
+</table>
+<div class="box why"><span class="t">Why "controlled inputs"?</span>Each input's value lives in React state (<code>useState</code>) and updates on every keystroke via <code>onChange</code>. React is the single source of truth for the form — that's the standard React pattern and makes validation/disabling trivial.</div>
+
+<!-- ============================================================ -->
+<h2 id="lifecycle">9 · The full request lifecycle (trace it end to end)</h2>
+<p>Put the whole thing together — this is the story that proves you understand it, not just the parts.</p>
+
+<div class="step"><div class="n">1</div><div class="body"><b>Register.</b> Form → <code>api.register()</code> → <code>POST /api/auth/register</code>. <code>@Valid</code> checks the email/password. <code>existsByEmail</code> → not found. BCrypt hashes the password. Row saved. <b>201</b>. Frontend navigates to <code>/login</code>.</div></div>
+<div class="step"><div class="n">2</div><div class="body"><b>Log in.</b> <code>POST /api/auth/login</code>. <code>findByEmail</code> → user. <code>passwordEncoder.matches</code> → true. <code>JwtService.generateToken</code> signs a 15-min JWT. Response sets <code>Set-Cookie: token=…; HttpOnly; SameSite=Lax</code>. Browser stores it invisibly. Frontend sets <code>email</code> in context → navigates to <code>/</code>.</div></div>
+<div class="step"><div class="n">3</div><div class="body"><b>View protected page.</b> <code>ProtectedRoute</code> sees <code>email</code> is set → renders Dashboard. (On a fresh load instead, <code>AuthProvider</code>'s <code>useEffect</code> fires <code>GET /api/me</code> first.)</div></div>
+<div class="step"><div class="n">4</div><div class="body"><b>Every protected request.</b> Browser auto-attaches the cookie (<code>credentials:"include"</code>). <code>JwtAuthenticationFilter</code> reads it, <code>verifyWith(key)</code> checks signature + expiry, sets the <code>SecurityContext</code>. <code>anyRequest().authenticated()</code> passes. Controller runs. <b>200</b>.</div></div>
+<div class="step"><div class="n">5</div><div class="body"><b>Refresh the page.</b> React state is wiped, but the <b>cookie survives</b>. <code>useEffect</code> → <code>/api/me</code> → 200 → <code>email</code> restored. You stay logged in. <span class="pill good">verified live</span></div></div>
+<div class="step"><div class="n">6</div><div class="body"><b>Log out.</b> <code>POST /api/auth/logout</code> → server sends an empty, <code>maxAge=0</code> cookie → browser deletes it. Context <code>email</code> → null → <code>ProtectedRoute</code> bounces you to <code>/login</code>.</div></div>
+<div class="step"><div class="n">7</div><div class="body"><b>Tampered/expired token.</b> <code>parseSignedClaims</code> throws → filter stays anonymous → <code>/api/me</code> returns <b>401</b> → frontend treats you as logged out. <span class="pill good">verified</span></div></div>
+
+<!-- ============================================================ -->
+<h2 id="present">10 · Presentation guideline</h2>
+<p>A tested structure for a ~15-minute talk. Tell a <b>story</b> (problem → decisions → code → proof), don't just tour files.</p>
+
+<table>
+<tr><th>#</th><th>Beat</th><th>Time</th><th>What to say / show</th></tr>
+<tr><td>1</td><td>The problem</td><td>1 min</td><td>"HTTP is stateless, so after login the server forgets you. Authentication is about re-proving identity on every request — securely." Define AuthN vs AuthZ.</td></tr>
+<tr><td>2</td><td>The big decision</td><td>2 min</td><td>Show the <a href="#concepts">XSS/CSRF/cookie table</a>. "We chose the harder, safer path: an httpOnly cookie. Here's the trade-off that caused." This is your strongest moment — you made a reasoned choice.</td></tr>
+<tr><td>3</td><td>Architecture diagram</td><td>1 min</td><td>Draw the 3 tiers + the login sequence diagram. "I drew this before writing code."</td></tr>
+<tr><td>4</td><td>Live demo</td><td>4 min</td><td>Run the <a href="#demo">demo script</a> below. The <b>refresh-stays-logged-in</b> + <b>httpOnly in DevTools</b> moments are the crowd-pleasers.</td></tr>
+<tr><td>5</td><td>Code highlights</td><td>4 min</td><td>Show only 4 files: <code>JwtService</code> (sign/verify), <code>JwtAuthenticationFilter</code> (the gate), <code>AuthController.login</code> (the cookie), <code>AuthContext</code> (the <code>useEffect</code> that survives refresh). Don't read every file — narrate the flow.</td></tr>
+<tr><td>6</td><td>Trade-offs &amp; next</td><td>2 min</td><td>Name what you deliberately skipped (CSRF token, refresh tokens, roles) and why. Ending on honest limitations reads as senior.</td></tr>
+<tr><td>7</td><td>Q&amp;A</td><td>1 min+</td><td>Use the <a href="#qa">prepared answers</a>.</td></tr>
+</table>
+
+<div class="box good"><span class="t">Three sentences that make you sound like you own it</span>
+<ol style="margin:6px 0 0">
+<li>"The server stores no sessions — the JWT's signature <i>is</i> the proof, which is why we can stay stateless."</li>
+<li>"We store the token in an httpOnly cookie so a malicious script can't read it; the cost is CSRF, which <code>SameSite=Lax</code> handles."</li>
+<li>"Refresh keeps you logged in because the cookie outlives React state, and <code>/api/me</code> rebuilds the session on load."</li>
+</ol>
+</div>
+
+<h3 id="demo">10.1 · Live demo script (have all 3 servers running)</h3>
+<div class="card">
+<p><b>Pre-flight:</b> Docker Postgres up (:5433), backend up (:8080), Vite up (:5173). Open <code>http://localhost:5173</code> and DevTools → <i>Application → Cookies</i> and <i>Network</i> tabs.</p>
+<div class="step"><div class="n">1</div><div class="body"><b>Land on /login.</b> "No cookie yet, so the route guard bounced me here." </div></div>
+<div class="step"><div class="n">2</div><div class="body"><b>Register</b> a new account → back to login. (Optionally show the DB row: the password is a BCrypt hash, not plaintext.)</div></div>
+<div class="step"><div class="n">3</div><div class="body"><b>Log in.</b> In Network, click the <code>login</code> request → show <b>Response Header <code>Set-Cookie: token=…; HttpOnly</code></b>. In Application → Cookies, show the <code>token</code> cookie with the <b>HttpOnly ✔</b> flag.</div></div>
+<div class="step"><div class="n">4</div><div class="body"><b>Prove JS can't read it.</b> In Console type <code>document.cookie</code> → the token is <b>not</b> there. "That's the XSS defense — a script can't steal what it can't see."</div></div>
+<div class="step"><div class="n">5</div><div class="body"><b>Refresh (F5).</b> You stay logged in. In Network, point out the automatic <code>GET /api/me → 200</code>. "React state was wiped; the cookie wasn't." <span class="pill good">the money shot</span></div></div>
+<div class="step"><div class="n">6</div><div class="body"><b>Log out</b> → bounced to /login. Show the <code>token</code> cookie is now <b>gone</b>. Try visiting <code>/</code> manually → redirected. "Server deleted the cookie; the guard does the rest."</div></div>
+</div>
+<div class="box warn"><span class="t">Demo safety net</span>If something breaks live, you already have the <b>curl proof</b>: register 201 / me-no-cookie 401 / login 200+Set-Cookie / me-with-cookie 200 / wrong-pw 401 / logout 204 / me-after-logout 401, plus a green CORS preflight. Keep that terminal output as a backup slide.</div>
+
+<!-- ============================================================ -->
+<h2 id="qa">11 · Q&amp;A preparation</h2>
+
+<div class="qa"><div class="q">Why a cookie instead of localStorage?</div><div class="a">localStorage is readable by any JavaScript, so one XSS bug = silent token theft. An httpOnly cookie is invisible to JS. The downside is CSRF, which we mitigate with <code>SameSite=Lax</code>.</div></div>
+<div class="qa"><div class="q">If it's stateless, how do you log someone out or ban them?</div><div class="a">You can't instantly invalidate a JWT — that's the honest cost of statelessness. We limit exposure with a 15-minute expiry. Real revocation needs a token blocklist or short-lived access + refresh tokens (a planned next step).</div></div>
+<div class="qa"><div class="q">What stops me from editing the JWT payload to become another user?</div><div class="a">The signature. Change one byte of the payload and <code>HMAC-SHA512(payload, secret)</code> no longer matches; <code>parseSignedClaims</code> throws and the filter rejects it. You can't forge a valid signature without the server's secret.</div></div>
+<div class="qa"><div class="q">Isn't the JWT payload readable? Isn't that insecure?</div><div class="a">It's Base64, not encryption — anyone can read the email and expiry. That's fine: a JWT proves <i>authenticity</i>, not <i>secrecy</i>. We never put anything sensitive in it. Password lives only as a BCrypt hash in the DB.</div></div>
+<div class="qa"><div class="q">Why the same 401 for "no such user" and "wrong password"?</div><div class="a">To prevent user enumeration. Different messages would let an attacker discover which emails are registered by probing.</div></div>
+<div class="qa"><div class="q">Why did CORS need special configuration?</div><div class="a">The frontend (:5173) and backend (:8080) are different origins, so the browser enforces CORS. And because we send cookies, we must set <code>allowCredentials(true)</code> — which forbids a <code>*</code> wildcard origin, so we list the exact origin <code>http://localhost:5173</code>.</div></div>
+<div class="qa"><div class="q">Why BCrypt and not SHA-256?</div><div class="a">SHA-256 is fast — great for checksums, bad for passwords because attackers can try billions/sec. BCrypt is deliberately slow and salted, so cracking a stolen DB is expensive and rainbow tables don't work.</div></div>
+<div class="qa"><div class="q">What would you change for production?</div><div class="a"><code>secure(true)</code> on the cookie (HTTPS-only), the JWT secret from an env var/secret manager, versioned DB migrations (Flyway) instead of <code>ddl-auto=update</code>, re-enable Spring CSRF, add refresh tokens and rate-limiting on login.</div></div>
+<div class="qa"><div class="q">Why HS512 (symmetric) and not RS256 (asymmetric)?</div><div class="a">One service both issues and verifies the token, so a single shared secret is simplest and fastest. Asymmetric keys matter when other services must verify tokens without the power to mint them.</div></div>
+
+<!-- ============================================================ -->
+<h2 id="next">12 · What we deliberately skipped &amp; where to go next</h2>
+<div class="grid2">
+<div class="card">
+<h4>Deliberately out of scope (say so proudly)</h4>
+<ul>
+<li>Refresh tokens (only a 15-min access token today)</li>
+<li>Roles / authorization beyond "logged in"</li>
+<li>Spring's CSRF token (relying on <code>SameSite</code> for now)</li>
+<li>Email verification / password reset</li>
+<li>Rate limiting &amp; account lockout</li>
+<li>Versioned DB migrations (using <code>ddl-auto</code>)</li>
+</ul>
+</div>
+<div class="card">
+<h4>Natural next milestones</h4>
+<ol>
+<li>Turn Spring CSRF protection back on with a matching token flow.</li>
+<li>Add a refresh token so sessions outlive 15 min safely.</li>
+<li>Add a <code>role</code> column + method-level authorization (<code>@PreAuthorize</code>).</li>
+<li>Swap <code>ddl-auto</code> for Flyway migrations.</li>
+<li>Externalize the JWT secret; set <code>secure(true)</code> behind HTTPS.</li>
+</ol>
+</div>
+</div>
+
+<hr>
+<p class="tocnote">Login Demo — React + TypeScript · Spring Boot 4.1 · PostgreSQL 16 · JWT in an httpOnly cookie. Built and verified end-to-end. This document is a learning &amp; presentation aid; the code is the source of truth.</p>
+
+</main>
+</div>
+</body>
+</html>

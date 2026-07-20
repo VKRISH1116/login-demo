@@ -1,0 +1,113 @@
+:root {
+  --text: #6b6375;
+  --text-h: #08060d;
+  --bg: #f6f5f8;
+  --card-bg: #fff;
+  --border: #e5e4e7;
+  --accent: #aa3bff;
+  --error: #d33;
+  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+
+  font: 16px/1.5 var(--sans);
+  color-scheme: light dark;
+  color: var(--text);
+  background: var(--bg);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #9ca3af;
+    --text-h: #f3f4f6;
+    --bg: #101116;
+    --card-bg: #1f2028;
+    --border: #2e303a;
+    --accent: #c084fc;
+    --error: #f87171;
+  }
+}
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.card {
+  width: 360px;
+  max-width: 100%;
+  padding: 32px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--card-bg);
+  box-shadow: rgba(0, 0, 0, 0.08) 0 10px 25px -5px;
+}
+
+h1 {
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--text-h);
+  margin: 0 0 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+}
+
+input {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text-h);
+  font-size: 15px;
+}
+
+input:focus {
+  outline: 2px solid var(--accent);
+  border-color: var(--accent);
+}
+
+button {
+  margin-top: 4px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.error {
+  color: var(--error);
+  font-size: 14px;
+  margin: 0;
+}
+
+a {
+  color: var(--accent);
+}
+
+p {
+  margin: 16px 0 0;
+  font-size: 14px;
+}
