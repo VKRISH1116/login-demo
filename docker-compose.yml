@@ -5,7 +5,7 @@ services:
     environment:
       POSTGRES_DB: login_demo
       POSTGRES_USER: login
-      POSTGRES_PASSWORD: login_dev_pw
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?set DB_PASSWORD in .env}
     ports:
       - "5433:5432"
     volumes:

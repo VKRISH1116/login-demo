@@ -19,6 +19,10 @@ dist-ssr/
 .DS_Store
 Thumbs.db
 
+# ── Secrets / local env ─────────────────────────────────
+.env
+!.env.example
+
 # ── Logs ────────────────────────────────────────────────
 *.log
 npm-debug.log*
